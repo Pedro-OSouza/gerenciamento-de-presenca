@@ -1,4 +1,6 @@
 <!-- ! Totalmente temporário -->
+<!-- Esse Script deve ser apagado posteiormente -->
+<!-- quando o cadastro de todos os alunos e aulas forem realizado eles  -->
 <?php
 require_once __DIR__ . '/scripts/php/classes/aluno.php';
 require_once __DIR__ . '/scripts/php/classes/turma.php';
@@ -10,7 +12,7 @@ if (isset($_POST['cadastrar_aulas'])) {
     $turmaId = $_POST['turma_id'];
     $datasAulas = explode("\n", $_POST['datas_aulas']);
     $aula = new Aula();
-    
+
     foreach ($datasAulas as $dataAula) {
         $dataAula = trim($dataAula);
         if (!empty($dataAula)) {
@@ -24,9 +26,9 @@ if (isset($_POST['cadastrar_aulas'])) {
 if (isset($_POST['cadastrar_aluno'])) {
     $aluno = new Aluno();
     $presenca = new Presenca();
-    
+
     $alunoId = $aluno->cadastrar($_POST['nome'], $_POST['email'], $_POST['turma_id']);
-    
+
     if ($alunoId && isset($_POST['presencas'])) {
         foreach ($_POST['presencas'] as $aulaId => $status) {
             if ($status !== '') {
@@ -40,15 +42,25 @@ if (isset($_POST['cadastrar_aluno'])) {
 
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <?php include __DIR__ . '/scripts/php/includes/head.php' ?>
     <title>Cadastro Rápido</title>
     <style>
-        .box { background: var(--bulma-scheme-main-bis); }
-        textarea { min-height: 150px; }
-        .presenca-item { margin-bottom: 1rem; }
+        .box {
+            background: var(--bulma-scheme-main-bis);
+        }
+
+        textarea {
+            min-height: 150px;
+        }
+
+        .presenca-item {
+            margin-bottom: 1rem;
+        }
     </style>
 </head>
+
 <body class="has-background-dark has-text-light">
     <?php include __DIR__ . '/scripts/php/includes/navbar.php' ?>
 
@@ -142,7 +154,7 @@ if (isset($_POST['cadastrar_aluno'])) {
                         if (isset($_GET['turma_id'])) {
                             $aula = new Aula();
                             $aulas = $aula->buscarPorTurma($_GET['turma_id']);
-                            
+
                             foreach ($aulas as $aula) {
                                 echo '
                                 <div class="presenca-item">
@@ -177,4 +189,5 @@ if (isset($_POST['cadastrar_aluno'])) {
 
     <?php include __DIR__ . '/scripts/php/includes/footer.php' ?>
 </body>
+
 </html>

@@ -1,85 +1,97 @@
 <?php
-
-use function PHPSTORM_META\type;
-
 class Database {
-    private static $instance = null;
-    private $conn;
+    private static ?Database $instance = null;
+    private PDO $pdo;
+    private bool $throwOnError = false;
 
-    private function __construct(){
-        $this->conn = new mysqli(
-            hostname: 'localhost',
-            username: 'root',
-            password: '',
-            database: 'inforescola'
-        );
+    private function __construct() {
+        $dsn = "mysql:host=localhost;dbname=inforescola;charset=utf8mb4";
+        $options = [
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,       // Exceptions em caso de erro
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,  // Fetch padrão associativo
+            PDO::ATTR_EMULATE_PREPARES => false,              // Usa prepared statements nativos
+        ];
 
-        if($this->conn->connect_error){
-            die("Erro de conexão".$this->conn->connect_error);
-        };
+        try {
+            $this->pdo = new PDO($dsn, 'root', '', $options);
+        } catch (PDOException $e) {
+            die("Erro de conexão: " . $e->getMessage());
+        }
     }
 
-    public static function getInstance() {
-        if(!self::$instance){
+    public static function getInstance(): Database {
+        if (self::$instance === null) {
             self::$instance = new Database();
-        };
-
+        }
         return self::$instance;
     }
 
-    public function getConnection(): mysqli {
-        return $this->conn;
+    public function getConnection(): PDO {
+        return $this->pdo;
     }
 
-    public function executeQuery($sql, $params = [], $returnType = 'all') {
+    public function setThrowOnError(bool $v): void {
+        $this->throwOnError = $v;
+    }
+
+    // Transações
+    public function beginTransaction(): bool {
+        return $this->pdo->beginTransaction();
+    }
+
+    public function commit(): bool {
+        return $this->pdo->commit();
+    }
+
+    public function rollback(): bool {
+        return $this->pdo->rollBack();
+    }
+
+    /**
+     * Execute query para SELECT
+     * $returnType = 'all' (array) ou 'single' (linha única)
+     */
+    public function executeQuery(string $sql, array $params = [], string $returnType = 'all') {
         try {
-            $stmt = $this->conn->prepare($sql);
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute($params);
 
-            if(!$stmt){
-                throw new Exception("Prepare failed:".$this->conn->error);
-            };
-
-            if (!empty($params)){
-                $types = '';
-                $values = [];
-
-                foreach($params as $param){
-                    if(is_int($param)){
-                        $types .= 'i';
-                    } elseif (is_double($param)){
-                        $types .= 'd';
-                    } else {
-                        $types .= 's';
-                    }
-                    $values[] = $param;
-                };
-
-                $stmt->bind_param($types, ...$values);
-            };
-
-            if (!$stmt->execute()){
-                throw new Exception('Execute failed:'.$stmt->error);
-            }
-
-            $result = $stmt->get_result();
-
-            if($returnType === 'single'){
-                return $result ? $result->fetch_assoc() : null;
-            }
-
-            $data = [];
-
-            if($result){
-                while($row = $result->fetch_assoc()){
-                    $data[] = $row;
+            if (stripos(trim($sql), 'select') === 0) {
+                if ($returnType === 'single') {
+                    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+                    return $row !== false ? $row : null;
                 }
-
-                return $data;
+                return $stmt->fetchAll(PDO::FETCH_ASSOC);
             }
-        } catch (Exception $e) {
-            error_log("[DB Error] ".$e->getMessage(). "\nQuery: ".$sql);
+
+            // Para inserts/updates/deletes, mantém compatibilidade
+            return [];
+        } catch (PDOException $e) {
+            $this->handleError($e, $sql, $params);
             return ($returnType === 'single') ? null : [];
         }
     }
+
+    /**
+     * Execute NonQuery: INSERT, UPDATE, DELETE
+     */
+    public function executeNonQuery(string $sql, array $params = []): bool {
+        try {
+            $stmt = $this->pdo->prepare($sql);
+            return $stmt->execute($params);
+        } catch (PDOException $e) {
+            $this->handleError($e, $sql, $params);
+            return false;
+        }
+    }
+
+    private function handleError(PDOException $e, string $sql = '', array $params = []): void {
+        $log = "[DB Error] " . $e->getMessage() . " | SQL: {$sql} | PARAMS: " . json_encode($params);
+        error_log($log);
+        if ($this->throwOnError) {
+            throw $e;
+        }
+    }
 }
+
 ?>

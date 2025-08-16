@@ -1,20 +1,38 @@
 <?php
+header('Content-Type: application/json');
+require_once __DIR__ . '/../../classes/aula.php';
 
-    header('Content-type: application/json');
-    require_once __DIR__.'/../../classes/aula.php';
-
-    if($_SERVER['REQUEST_METHOD'] === "POST"){
+try {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $turma_id = $_POST['turma_id'] ?? null;
         $hora_inicio = $_POST['hora_inicio'] ?? null;
         $hora_fim = $_POST['hora_fim'] ?? null;
 
-        if($turma_id && $hora_inicio && $hora_fim){
+        if ($turma_id && $hora_inicio && $hora_fim) {
             $aula = new Aula();
-            $success = $aula->criarDiaDaAula($turma_id, $hora_inicio, $hora_fim);
-            echo json_encode(['success' => true, 'dados' => $success]);
-        } else {
-            echo json_encode(['error' => 'Dados insuficientes']);
-        }
-    }
+            $resultado = $aula->criarDiaDaAula($turma_id, $hora_inicio, $hora_fim);
 
+            echo json_encode([
+                'success' => true,
+                'dados' => $resultado
+            ]);
+        } else {
+            echo json_encode([
+                'success' => false,
+                'error' => 'Dados insuficientes'
+            ]);
+        }
+    } else {
+        echo json_encode([
+            'success' => false,
+            'error' => 'Método não permitido'
+        ]);
+    }
+} catch (Exception $e) {
+    http_response_code(500);
+    echo json_encode([
+        'success' => false,
+        'error' => 'Erro no servidor: ' . $e->getMessage()
+    ]);
+}
 ?>
