@@ -13,7 +13,7 @@ class Aluno extends Model
                 FROM alunos a
                 LEFT JOIN matriculas m ON a.id = m.aluno_id
                 LEFT JOIN turmas t ON m.turma_id = t.id
-                WHERE a.ativo = 1";
+                WHERE a.status = 'ativo'";
 
         return $this->query($sql);
     }
@@ -98,5 +98,18 @@ class Aluno extends Model
         $sql = "INSERT INTO matriculas (aluno_id, turma_id) VALUES (?, ?)";
         return $this->execute($sql, [$alunoId, $turmaId]);
     }
+
+    public function editar($nome, $email, $turma, $status, $alunoId){
+        $sql = "UPDATE alunos 
+            SET 
+            nome = ?,
+            email = ?,
+            turma = ?
+            status = ?
+            WHERE id = ?";
+
+        $this->execute($sql, [$nome, $email, $turma, $status, $alunoId]);
+    }
+
 }
 ?>
