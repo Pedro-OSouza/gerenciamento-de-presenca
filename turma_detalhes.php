@@ -86,9 +86,11 @@ $aula_atual = $aulaObj->buscarAulaDoDia($turma_id); // Aula de hoje;
                         <div class="columns is-vcentered is-mobile"
                             style="border-bottom: 1px solid rgba(255,255,255,0.1); border-radius: 0;">
                             <div class="column is-6">
-                                <p class="has-text-weight-semibold has-text-white">
-                                    <?= htmlspecialchars($aluno['aluno_nome']) ?>
-                                </p>
+                                <a href="aluno_detalhes.php?id=<?= htmlspecialchars($aluno['aluno_id']) ?>">
+                                    <p class="has-text-weight-semibold has-text-white">
+                                        <?= htmlspecialchars($aluno['aluno_nome']) ?>
+                                    </p>
+                                </a>
                                 <p class="is-size-7 has-text-grey-light presencas-total">Presenças:
                                     <?= htmlspecialchars($aluno['total_presencas']) ?>
                                 </p>
