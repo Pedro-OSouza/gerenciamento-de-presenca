@@ -54,6 +54,13 @@
                     <span class="icon is-small mr-6">
                         <i class="fas fa-pen"></i>
                     </span>
+
+                    <label for="status">Status</label>
+                    <select name="status" id="status">
+                        <option value="1">Ativo</option>
+                        <option value="0">Inativo</option>
+                    </select>
+                    
                 </div>
 
                 <div class="field is-flex is-flex-wrap-wrap is-align-items-center  mb-5 mt-4 pt-4">
