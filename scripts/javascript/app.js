@@ -19,4 +19,3 @@ if(document.querySelector('.auto-dismiss')){
     autoDismiss('.auto-dismiss')
 }
 
-/* Todo: ADicionar o css com fade-out effect */
