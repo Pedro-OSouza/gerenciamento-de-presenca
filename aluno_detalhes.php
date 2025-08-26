@@ -56,7 +56,7 @@
                     </span>
 
                     <label for="status">Status</label>
-                    <select name="status" id="status">
+                    <select name="status" id="status" class="select input mr-4">
                         <option value="1">Ativo</option>
                         <option value="0">Inativo</option>
                     </select>
