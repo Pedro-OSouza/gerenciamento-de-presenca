@@ -47,6 +47,10 @@ class Database {
         return $this->pdo->rollBack();
     }
 
+    public function inTransaction(): bool{
+        return $this->pdo->inTransaction();
+    }
+
     /**
      * Execute query para SELECT
      * $returnType = 'all' (array) ou 'single' (linha única)
