@@ -10,7 +10,7 @@
                 $aluno_status = $_POST['alunoStatus'] ?? null;
                 $aluno_id = $_POST['alunoId'] ?? null;
     
-                if($aluno_nome && $aluno_email && $aluno_turma && $aluno_status && $aluno_id) {
+                if($aluno_nome && $aluno_turma && $aluno_status && $aluno_id) {
                     $aluno = new Aluno();
                     $aluno->editar($aluno_nome, $aluno_email, $aluno_turma, $aluno_status, $aluno_id);
                     echo json_encode(["success" => true]);
