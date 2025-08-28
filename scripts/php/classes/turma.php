@@ -66,7 +66,7 @@ class Turma extends Model
                 FROM alunos a
                 JOIN matriculas m ON a.id = m.aluno_id 
                 WHERE m.turma_id = ?
-                AND a.ativo = 1
+                AND a.status = 'ativo'
                 ORDER BY a.nome";
 
         return $this->query($sql, [$turma_id, $turma_id, $turma_id]);
