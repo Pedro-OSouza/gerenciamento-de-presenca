@@ -36,3 +36,5 @@ const AlunoAPI = {
         }
     }
 }
+
+export default AlunoAPI
