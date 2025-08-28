@@ -1,6 +1,7 @@
 import autoDismiss from './modules/autoDismiss/autoDismiss.js';
 import closer from './modules/closer/closer.js';
 
+
 // Carrega módulos conforme a página
 if (document.querySelector('.btn-presenca')) {
     import('./modules/turmas/presencaUi.js');
@@ -8,6 +9,10 @@ if (document.querySelector('.btn-presenca')) {
 
 if (document.querySelector('.button-criar-aula')) {
     import('./modules/turmas/aulaUi.js')
+}
+
+if (document.querySelector('#nome-aluno')) {
+    import('./modules/alunos/alunoUi.js')
 }
 
 if(document.querySelector(".toggle-closer") && document.querySelector(".toggle-closer-btn")){
