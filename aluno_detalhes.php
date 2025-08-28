@@ -1,5 +1,6 @@
 <?php
     include_once __DIR__.'./scripts/php/classes/aluno.php';
+    include_once __DIR__.'./scripts/php/classes/turma.php';
 
     $id_aluno = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
 
@@ -13,6 +14,9 @@
     portanto devem ser contados. */
     $total_presencas = count(array_filter($presencas_aluno, fn($p) => $p['presenca'] == 1 ));
     $total_faltas = count(array_filter($presencas_aluno, fn($p) => $p['presenca'] == 0));
+
+    $turmas = new Turma();
+    $listaTurmas = $turmas->listarTurmas();
 ?>
 
 <!DOCTYPE html>
@@ -34,33 +38,40 @@
             <div class="is-centered mt-5 pt-5">
                 <div class="field is-flex is-align-items-center">
                     <label for="nome-aluno" class="mr-3">Nome:</label>
-                    <input type="text" name="nome" id="nome-aluno" placeholder="Nome do Aluno" class="input mr-3">
+                    <input type="text" name="nome" id="nome-aluno" placeholder="Nome do Aluno" class="input inpt mr-3">
                     <span class="icon is-small mr-6">
                         <i class="fas fa-pen"></i>
                     </span>
 
                     <label for="email" class="mr-3">Email:</label>
-                    <input type="email" name="email" id="email" placeholder="Email" class="input mr-3">
+                    <input type="email" name="email" id="email-aluno" placeholder="Email" class="input inpt mr-3">
                     <span class="icon is-small mr-6">
                         <i class="fas fa-pen"></i>
                     </span>
 
                     <label for="turmas" class="mr-3">Turma:</label>
-                    <select name="turma" id="turma" class="select input mr-4">
+                    <select name="turma" id="turma-aluno" class="select input mr-4">
                         <option value="" disabled>Turma do aluno</option>
-                        <option value="1">Turma 1</option>
-                        <option value="2">Turma 2</option>
+                        <?php 
+                            foreach ($listaTurmas as $turma):
+                        ?>
+                            <option value="<?= htmlspecialchars($turma['id']) ?>"><?= htmlspecialchars($turma['nome']) ?></option>
+                        <?php endforeach ?>
                     </select>
                     <span class="icon is-small mr-6">
                         <i class="fas fa-pen"></i>
                     </span>
 
-                    <label for="status">Status</label>
-                    <select name="status" id="status" class="select input mr-4">
-                        <option value="1">Ativo</option>
-                        <option value="0">Inativo</option>
+                    <label for="status" class="mr-3">Status: </label>
+                    <select name="status" id="status-aluno" class="select input mr-4">
+                        <option value="ativo">Ativo</option>
+                        <option value="inativo">Inativo</option>
+                        <option value="concluido">Concluiu</option>
                     </select>
-                    
+                    <span class="icon is-small mr-6">
+                        <i class="fas fa-pen"></i>
+                    </span>
+
                 </div>
 
                 <div class="field is-flex is-flex-wrap-wrap is-align-items-center  mb-5 mt-4 pt-4">
@@ -84,10 +95,10 @@
 
                 <div class="field is-grouped mt-6">
                     <p class="control">
-                        <button class="button is-primary">Salvar Mudanças</button>
+                        <button class="button is-primary" id="salvar-mudancas-aluno" disabled="true">Salvar Mudanças</button>
                     </p>
                     <p class="control">
-                        <button class="button is-light">Descartar Mudanças</button>
+                        <button class="button is-light" id="descartar-mudancas-aluno" disabled="true">Descartar Mudanças</button>
                     </p>
                 </div>
 
@@ -127,6 +138,7 @@
     </main>
 
     <?php include __DIR__ . './scripts/php/includes/footer.php' ?>
+    <script type="module" src="./scripts/javascript/app.js"></script>
 </body>
 
 </html>
