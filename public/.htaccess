@@ -1,0 +1,8 @@
+RewriteEngine On
+
+# Permitir acesso direto a arquivos existentes (css, js, imagens, pdfs...)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Redirecionar tudo para o index.php
+RewriteRule ^ index.php [QSA,L]
