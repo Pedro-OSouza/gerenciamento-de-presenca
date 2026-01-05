@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ## Mini Documentação Oficial do Projeto
 
 
@@ -220,3 +221,8 @@ config/env.php — central de variáveis (futuramente lida pelo Node se quiser)
 📌 11. Database
 
 database/schema.sql contém toda a estrutura do banco.
+=======
+# gerenciamento-de-presenca
+### Em desenvolvimento
+Um sistema de Gerenciamento de presença para escolas e cursos.
+>>>>>>> 7dc3845b0cf5259bb6681020d5e94aa52513eecf
