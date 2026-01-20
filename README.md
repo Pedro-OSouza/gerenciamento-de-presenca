@@ -1,6 +1,6 @@
 <<<<<<< HEAD
 ## Mini Documentação Oficial do Projeto
-
+(sync did)
 
 ```
     project/
