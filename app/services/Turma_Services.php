@@ -36,12 +36,12 @@
         public function validarNome($nome){
             return validarTexto_helper($nome);
         }
-        public function cadastrar($nome, $dia_semana, $hora_inicio, $hora_fim) {
+        public function cadastrar($nome, $dia_semana, $hora_inicio, $hora_fim, $qtd_vagas, $qtd_alunos) {
             $this->validarNome($nome);
             $this->validarDiaSemana($dia_semana);
             $this->validarHora($hora_inicio, $hora_fim);
 
-            return $this->turma->cadastrar($nome, $dia_semana, $hora_inicio, $hora_fim);
+            return $this->turma->cadastrar($nome, $dia_semana, $hora_inicio, $hora_fim, $qtd_vagas, $qtd_alunos);
         }
 
         public function editar($turma_id, $nome, $dia_semana, $hora_inicio, $hora_fim){

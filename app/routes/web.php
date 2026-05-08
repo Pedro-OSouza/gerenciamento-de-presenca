@@ -37,4 +37,12 @@ $router->post('/cadastro/aluno/post', function($params, $factory){
     $factory->make(CadastroController::class)->aluno_post();
 });
 
+$router->get('/cadastro/turma', function($params, $factory){
+    $factory->make(CadastroController::class)->turma();
+});
+
+$router->post('/cadastro/turma/post', function($params, $factory){
+    $factory->make(CadastroController::class)->turma_post();
+});
+
 return $router;

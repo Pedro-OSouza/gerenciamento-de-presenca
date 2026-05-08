@@ -13,8 +13,8 @@ class CadastroController extends Controller{
     }
 
     public function turma(){
-        // TODO posteriormente criar o método de cadastro de turmas
-        echo "Encontrado página de cadastro de turmas";
+        
+        return $this->view(('cadastro/cadastro_turmas'));
     }
 
     public function aluno_post(){
@@ -32,6 +32,8 @@ class CadastroController extends Controller{
             return;
         }
 
-        
+    }
+    public function turma_post(){
+        if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register-turma']))
     }
 }
