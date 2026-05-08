@@ -51,12 +51,12 @@ class Turma extends Model
     // CRUD básico de Turmas
     // ===============================
 
-    public function cadastrar($nome, $dia_semana, $hora_inicio, $hora_fim)
+    public function cadastrar($nome, $dia_semana, $hora_inicio, $hora_fim, $qtd_vagas, $qtd_alunos)
     {
-        return $this->transaction(function () use ($nome, $dia_semana, $hora_inicio, $hora_fim) {
-            $sql = "INSERT INTO turmas (nome, dia_semana, hora_inicio, hora_fim)
+        return $this->transaction(function () use ($nome, $dia_semana, $hora_inicio, $hora_fim, $qtd_vagas, $qtd_alunos) {
+            $sql = "INSERT INTO turmas (nome, dia_semana, hora_inicio, hora_fim, qtd_vagas, qtd_alunos)
                     VALUES (?, ?, ?, ?)";
-            $this->execute($sql, [$nome, $dia_semana, $hora_inicio, $hora_fim]);
+            $this->execute($sql, [$nome, $dia_semana, $hora_inicio, $hora_fim, $qtd_vagas, $qtd_alunos]);
             return $this->db->getConnection()->lastInsertId();
         });
     }
